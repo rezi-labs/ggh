@@ -19,3 +19,6 @@ pub fn commit(message: &str) {
         exit(1);
     };
 }
+
+
+

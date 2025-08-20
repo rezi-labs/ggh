@@ -33,7 +33,23 @@ enum Commands {
         #[arg(short, long)]
         org: String,
     },
+    Issue {
+        #[arg(value_enum, short, long, default_value = "human")]
+        format: Format,
+        #[arg(short, long)]
+        org: String,
+        #[command(subcommand)]
+        command: IssuesSubCommands,
+    },
+
     Test {},
+}
+#[derive(Subcommand)]
+enum IssuesSubCommands {
+    Find {
+        #[arg(short, long)]
+        search: String,
+    },
 }
 
 fn main() {
@@ -45,5 +61,14 @@ fn main() {
         }
         Commands::Repos { format, org } => delegations::gh::get_all_repos(org, format),
         Commands::Test {} => {}
+        Commands::Issue {
+            format,
+            org,
+            command,
+        } => match command {
+            IssuesSubCommands::Find { search } => {
+                delegations::gh::find_issue_by_text(org, format, search)
+            }
+        },
     }
 }
