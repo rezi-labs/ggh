@@ -46,11 +46,7 @@ fn main() {
 
     match &cli.command {
         Commands::Commit { message } => {
-            let msg = format!(r#"{message}"#);
-            let sh = base::shell::new();
-            let g = git::GIT;
-            cmd!(sh, "{g} add .").run().unwrap();
-            cmd!(sh, "{g} commit -m {msg}").run().unwrap();
+            git::commit(message);
         }
         Commands::Curl { args } => {
             delegations::curl::run(args);

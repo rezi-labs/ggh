@@ -4,16 +4,9 @@ use crate::base;
 
 pub const GIT: &str = "git";
 
-pub fn run(args: &[String]) {
+pub fn commit(message: &str){
+    let msg = format!(r#"{message}"#);
     let sh = base::shell::new();
-    let result = if args.is_empty() {
-        cmd!(sh, "{GIT}").run()
-    } else {
-        cmd!(sh, "{GIT} {args...}").run()
-    };
-
-    if let Err(e) = result {
-        eprintln!("Git command failed: {}", e);
-        std::process::exit(1);
-    }
+    cmd!(sh, "{GIT} add .").run().unwrap();
+    cmd!(sh, "{GIT} commit -m {msg}").run().unwrap();
 }
