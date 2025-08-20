@@ -1,5 +1,4 @@
 use clap::{Parser, Subcommand, ValueEnum, command};
-use xshell::cmd;
 
 use crate::delegations::git;
 
@@ -8,7 +7,7 @@ mod delegations;
 
 #[derive(Parser)]
 #[command(name = "ggh")]
-#[command(about = "A CLI tool with git, gh, and curl commands")]
+#[command(about = "A CLI tool that simplifies git and github")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -34,6 +33,7 @@ enum Commands {
         #[arg(short, long)]
         org: String,
     },
+    Test {},
 }
 
 fn main() {
@@ -44,5 +44,6 @@ fn main() {
             git::commit(message);
         }
         Commands::Repos { format, org } => delegations::gh::get_all_repos(org, format),
+        Commands::Test {} => {}
     }
 }

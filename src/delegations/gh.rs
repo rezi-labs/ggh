@@ -16,7 +16,7 @@ pub fn get_all_repos(org: &String, format: &Format) {
 
     match res {
         Err(e) => {
-            eprintln!("GitHub CLI command failed: {}", e);
+            eprintln!("GitHub CLI command failed: {e}");
             std::process::exit(1);
         }
         Ok(s) => {

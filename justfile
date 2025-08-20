@@ -13,7 +13,7 @@ test:
     cargo test
 
 test_run:
-    just run
+    just run test
 
 # Run the static code analysis
 lint:

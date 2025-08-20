@@ -7,7 +7,7 @@ use crate::base;
 pub const GIT: &str = "git";
 
 pub fn commit(message: &str) {
-    let msg = format!(r#"{message}"#);
+    let msg = message.to_string();
     let sh = base::shell::new();
     if let Err(res) = cmd!(sh, "{GIT} add .").run() {
         eprintln!("{res}");
