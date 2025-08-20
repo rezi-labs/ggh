@@ -1,4 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum, command};
+use xshell::cmd;
+
+use crate::delegations::git;
 
 mod base;
 mod delegations;
@@ -19,15 +22,10 @@ enum Format {
 
 #[derive(Subcommand)]
 enum Commands {
-    #[command(about = "git extensions")]
-    Git {
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
-    },
-    #[command(about = "gh extensions")]
-    Gh {
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
+    #[command(about = "Commit")]
+    Commit {
+        #[arg(short, group = "input")]
+        message: String,
     },
     #[command(about = "curl exetensions")]
     Curl {
@@ -47,10 +45,13 @@ fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Commands::Git { args } => {
-            delegations::git::run(args);
+        Commands::Commit { message } => {
+            let msg = format!(r#"{message}"#);
+            let sh = base::shell::new();
+            let g = git::GIT;
+            cmd!(sh, "{g} add .").run().unwrap();
+            cmd!(sh, "{g} commit -m {msg}").run().unwrap();
         }
-        Commands::Gh { args } => delegations::gh::run(args),
         Commands::Curl { args } => {
             delegations::curl::run(args);
         }
