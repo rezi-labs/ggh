@@ -1,2 +1,2 @@
 # ggh
-Git and Github cli 
+Setup, Git, Github cli 
