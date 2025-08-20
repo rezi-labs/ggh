@@ -1,12 +1,21 @@
+use std::process::exit;
+
 use xshell::cmd;
 
 use crate::base;
 
 pub const GIT: &str = "git";
 
-pub fn commit(message: &str){
+pub fn commit(message: &str) {
     let msg = format!(r#"{message}"#);
     let sh = base::shell::new();
-    cmd!(sh, "{GIT} add .").run().unwrap();
-    cmd!(sh, "{GIT} commit -m {msg}").run().unwrap();
+    if let Err(res) = cmd!(sh, "{GIT} add .").run() {
+        eprintln!("{res}");
+        exit(1);
+    };
+
+    if let Err(res) = cmd!(sh, "{GIT} commit -m {msg}").run() {
+        eprintln!("{res}");
+        exit(1);
+    };
 }
