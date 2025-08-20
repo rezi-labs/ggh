@@ -27,11 +27,6 @@ enum Commands {
         #[arg(short, group = "input")]
         message: String,
     },
-    #[command(about = "curl exetensions")]
-    Curl {
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
-    },
     #[command(about = "get all repos of an org")]
     Repos {
         #[arg(value_enum, short, long, default_value = "human")]
@@ -47,9 +42,6 @@ fn main() {
     match &cli.command {
         Commands::Commit { message } => {
             git::commit(message);
-        }
-        Commands::Curl { args } => {
-            delegations::curl::run(args);
         }
         Commands::Repos { format, org } => delegations::gh::get_all_repos(org, format),
     }
